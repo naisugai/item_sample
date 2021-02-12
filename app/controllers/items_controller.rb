@@ -13,6 +13,12 @@ class ItemsController < ApplicationController
   # GET /items/new
   def new
     @item = Item.new
+    # 例えば画像を4枚までだとすると、ここでもう4つ作ってしまう
+    # build はDBにはまだできない。(createならできる)
+    @item.images.build
+    @item.images.build
+    @item.images.build
+    @item.images.build
   end
 
   # GET /items/1/edit
@@ -64,6 +70,6 @@ class ItemsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def item_params
-      params.require(:item).permit(:name, :description)
+      params.require(:item).permit(:name, :description, images_attributes: [:id, :title, :photo])
     end
 end

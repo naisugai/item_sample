@@ -21,11 +21,24 @@
     <%= form.text_area :description %>
   </div>
 
-  <%= form.fields_for :images do |image| %>
-    <%= image.text_field :title %>
-  <% end %>
+  <% item.images.each_with_index do |image, i| %>
+    写真 <%= i %>
 
-  <%= link_to 'New Image', new_item_image_path %>
+    <%= form.fields_for :images, image do |image_form| %>
+      <div border="1">
+        <%= image_form.label :title %>
+        <%= image_form.text_field :title %>
+        <% if image.photo.attached? %>
+          <%= image_tag(url_for(image.photo), size: '100') %>
+        <% else %>
+          画像なし
+        <% end %>
+        写真を指定・入れ替えたい場合はファイルを指定
+        <%= image_form.file_field :photo %>
+      </div>
+    <% end %>
+
+  <% end %>
 
   <div class="actions">
     <%= form.submit %>
