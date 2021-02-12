@@ -10,5 +10,18 @@
   <%= @item.description %>
 </p>
 
+<% @item.images.each do |image| %>
+  <p>
+    <strong>タイトル:</strong>
+    <%= image.title %>
+    <% if image.photo.attached? %>
+      <%= image_tag(url_for(image.photo)) %>
+    <% else %>
+      画像なし
+    <% end %>
+
+  </p>
+<% end %>
+
 <%= link_to 'Edit', edit_item_path(@item) %> |
 <%= link_to 'Back', items_path %>
