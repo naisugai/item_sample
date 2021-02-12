@@ -3,7 +3,8 @@ class ImagesController < ApplicationController
 
   # GET /images or /images.json
   def index
-    @images = Image.all
+    @item = Item.where(:id => params[:item_id]).first
+    @images = @item.images.all
   end
 
   # GET /images/1 or /images/1.json
@@ -12,7 +13,8 @@ class ImagesController < ApplicationController
 
   # GET /images/new
   def new
-    @image = Image.new
+    @item = Item.where(:id => params[:item_id]).first
+    @image = @item.images.build
   end
 
   # GET /images/1/edit
@@ -21,11 +23,12 @@ class ImagesController < ApplicationController
 
   # POST /images or /images.json
   def create
-    @image = Image.new(image_params)
+    @item = Item.where(:id => params[:item_id]).first
+    @image = @item.images.build(image_params)
 
     respond_to do |format|
       if @image.save
-        format.html { redirect_to @image, notice: "Image was successfully created." }
+        format.html { redirect_to [@item, @image], notice: "Image was successfully created." }
         format.json { render :show, status: :created, location: @image }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +41,7 @@ class ImagesController < ApplicationController
   def update
     respond_to do |format|
       if @image.update(image_params)
-        format.html { redirect_to @image, notice: "Image was successfully updated." }
+        format.html { redirect_to [@item, @image], notice: "Image was successfully updated." }
         format.json { render :show, status: :ok, location: @image }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +54,7 @@ class ImagesController < ApplicationController
   def destroy
     @image.destroy
     respond_to do |format|
-      format.html { redirect_to images_url, notice: "Image was successfully destroyed." }
+      format.html { redirect_to item_images_url, notice: "Image was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -59,7 +62,8 @@ class ImagesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_image
-      @image = Image.find(params[:id])
+      @item = Item.where(:id => params[:item_id]).first
+      @image = @item.images.where(:id => params[:id]).first
     end
 
     # Only allow a list of trusted parameters through.

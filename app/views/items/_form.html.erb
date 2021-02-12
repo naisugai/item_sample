@@ -8,7 +8,7 @@
           <li><%= message %></li>
         <% end %>
       </ul>
-    </div>
+    </div>  
   <% end %>
 
   <div class="field">
@@ -20,6 +20,12 @@
     <%= form.label :description %>
     <%= form.text_area :description %>
   </div>
+
+  <%= form.fields_for :images do |image| %>
+    <%= image.text_field :title %>
+  <% end %>
+
+  <%= link_to 'New Image', new_item_image_path %>
 
   <div class="actions">
     <%= form.submit %>
